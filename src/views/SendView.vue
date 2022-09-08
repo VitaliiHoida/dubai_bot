@@ -3,18 +3,23 @@
     <div class="wrapper" v-if="formShow">
       <h1>Specify transfer details</h1>
       <form @submit.prevent="onSubmit">
-        <p>* - required fields</p>
+        <p class="right">* - required fields</p>
+        <p class="info">If your city is not there - unfortunately, no one goes there (or from there)</p>
         <fieldset>
           <fieldset class="form-group">
-            <label for="from">*City from</label>
-            <input type="text" name="from"  v-model="from">
+            <label for="from">* City from</label>
+            <select name="from" v-model="from">
+              <option v-for="(item, i) in cities" :key="i">{{item}}</option>
+            </select>
           </fieldset>
           <fieldset class="form-group">
-            <label for="to">*City to</label>
-            <input type="text" name="to" v-model="to">
+            <label for="to">* City to</label>
+            <select name="to" v-model="to">
+              <option v-for="(item, i) in cities" :key="i">{{item}}</option>
+            </select>
           </fieldset>
           <fieldset class="form-group">
-            <label for="type">*Choose the parcel type</label>
+            <label for="type">* Choose the parcel type</label>
             <select v-model="type" name="type">
               <option>Documents</option>
               <option>Baggage</option>
@@ -60,6 +65,7 @@ export default {
     type: '',
     weight: '',
     formShow: true,
+    cities: ["Lviv", "Kyiv", "Kharkiv"],
   }),
   computed: {
     formattedDate() {

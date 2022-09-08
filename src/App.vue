@@ -5,46 +5,55 @@
 <style>
 body {
   background-color: #2c3e50;
-  font-family: 'Courier New';
+  font-family: "Roboto";
   color: #fff;
-  font-size: 18px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 300;
 }
 .container {
   display: block;
   max-width: 360px;
-  width: 100%;
   margin: 0 auto;
 }
 .wrapper {
-  padding: 20px 15px;
-  height: 100vh;
+  padding: 0 5px;
 }
 h1{
   text-align: center;
   font-size: 22px;
   line-height: 24px;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 400;
   margin: 20px 0;
+}
+
+.img_block {
+  width: 100%;
+  text-align: center;
+}
+.img_block img{
+  height: auto;
+  margin-top: 75px;
 }
 
 .btns-wrapper {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
+  margin-top: 50px;
 }
 .link_button {
   display: inline-block;
   color: white;
   background-color: seagreen;
-  padding: 10px 40px;
+  padding: 10px 25px;
   text-decoration: none;
   text-transform: uppercase;
   font-size: 20px;
   line-height: 20px;
-  font-weight: 700;
+  font-weight: 400;
   border-radius: 5px;
   margin: 0 5px;
   cursor: pointer;
@@ -81,13 +90,14 @@ fieldset {
 }
 .form-group select,
 .form-group .v3dp__datepicker {
-  width: 100% ;
+  max-width: 292px;
+  width: 100%;
 }
 input,
 select {
   border: 1px solid white;
   border-radius: 4px;
-  width: 298px;
+  width: 260px;
   padding: 10px 15px;
   background: none;
   color: white;
@@ -124,8 +134,19 @@ select>option {
 .sbmt_btn:disabled:hover {
   transform: none;
 }
-form p {
+form p.right {
   font-size: 12px;
   text-align: right;
+}
+
+input::placeholder{
+  color: rgba(255, 255, 255, 0.6);
+}
+
+p.info {
+  border: 3px solid #0080005e;
+  background-color: #7896b5;
+  padding: 7px;
+  border-radius: 3px;
 }
 </style>
