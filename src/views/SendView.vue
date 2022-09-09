@@ -2,20 +2,20 @@
   <div class="container">
     <div class="wrapper" v-if="formShow">
       <h1>Specify transfer details</h1>
+      <p class="info">If your city is not there - unfortunately, no one goes there (or from there)</p>
       <form @submit.prevent="onSubmit">
         <p class="right">* - required fields</p>
-        <p class="info">If your city is not there - unfortunately, no one goes there (or from there)</p>
         <fieldset>
           <fieldset class="form-group">
             <label for="from">* City from</label>
             <select name="from" v-model="from">
-              <option v-for="(item, i) in cities" :key="i">{{item}}</option>
+              <option v-for="(item, i) in cities" :key="i">{{ item }}</option>
             </select>
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* City to</label>
             <select name="to" v-model="to">
-              <option v-for="(item, i) in cities" :key="i">{{item}}</option>
+              <option v-for="(item, i) in cities" :key="i">{{ item }}</option>
             </select>
           </fieldset>
           <fieldset class="form-group">
@@ -27,7 +27,7 @@
           </fieldset>
           <fieldset class="form-group" v-if="type === 'Baggage'">
             <label for="weight">Choose the allowable baggage weight</label>
-            <select v-model="weight" name="weight" >
+            <select v-model="weight" name="weight">
               <option>Up to 5 kg</option>
               <option>Up to 10 kg</option>
               <option>Up to 15 kg</option>
@@ -45,8 +45,19 @@
       </form>
     </div>
     <div class="wrapper results" v-else>
-      <p>Unfortunately, no matches found :(</p>
-      <p>You can try again later</p>
+      <div class="results" v-if="results.length > 0">
+        <h1>We found matches for you 🥳</h1>
+        <p class="info">Сlick on the login to contact the person</p>
+        <div class="item" v-for="(item, i) in results" :key="i">
+          <span>{{ i + 1 }}. <a :href="url + item.login">{{ item.login }}</a></span>
+          <span>{{ item.cityFrom }} - {{ item.cityTo }}</span>
+          <span>{{ item.date }}</span>
+        </div>
+      </div>
+      <div class="no_matches" v-else>
+        <h1>Unfortunately,<br> no matches found 😔</h1>
+        <p class="info">You can try again later</p>
+      </div>
     </div>
   </div>
 </template>
@@ -59,6 +70,7 @@ export default {
     Datepicker
   },
   data: () => ({
+    url: "https://t.me/",
     from: '',
     to: '',
     date: new Date(),
@@ -66,6 +78,9 @@ export default {
     weight: '',
     formShow: true,
     cities: ["Lviv", "Kyiv", "Kharkiv"],
+    results: [
+      /*{login: "Hoida_V", cityFrom: "Kyiv", cityTo: "Dubai", date: "25.10.2022"}*/
+    ],
   }),
   computed: {
     formattedDate() {
@@ -78,7 +93,7 @@ export default {
       return dd + '.' + mm + '.' + yy;
     },
     isSubmitting() {
-      return (this.from&&this.to&&this.type) !== '';
+      return (this.from && this.to && this.type) !== '';
     },
   },
   methods: {

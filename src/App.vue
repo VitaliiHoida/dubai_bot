@@ -149,4 +149,15 @@ p.info {
   padding: 7px;
   border-radius: 3px;
 }
+
+.results .item {
+  display: flex;
+  justify-content: space-between;
+}
+.results .item a{
+  font-size: 18px;
+  text-transform: uppercase;
+  color: darkseagreen;
+  text-decoration: none;
+}
 </style>
