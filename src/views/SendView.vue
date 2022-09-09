@@ -79,7 +79,7 @@ export default {
     formShow: true,
     cities: ["Lviv", "Kyiv", "Kharkiv"],
     results: [
-      /*{login: "Hoida_V", cityFrom: "Kyiv", cityTo: "Dubai", date: "25.10.2022"}*/
+      {login: "Hoida_V", cityFrom: "Kyiv", cityTo: "Dubai", date: "25.10.2022"}
     ],
   }),
   computed: {

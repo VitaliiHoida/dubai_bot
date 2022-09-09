@@ -2,6 +2,10 @@
   <div class="container">
     <div class="wrapper">
       <h1>Enter your travel details</h1>
+      <p class="info">
+        Please indicate city names in English<br>
+        (e.g. Kyiv, Moscow, Dubai etc.)
+      </p>
       <form @submit.prevent="onSubmit">
         <p>* - required fields</p>
         <fieldset>
@@ -87,7 +91,10 @@ export default {
       );
     },
   },
-
+  mounted() {
+    /*let tg = window.Telegram.WebApp;
+    this.login = tg.initDataUnsafe.user.username;*/
+  }
 }
 </script>
 

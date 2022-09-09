@@ -35,6 +35,7 @@ h1{
 .img_block img{
   height: auto;
   margin-top: 75px;
+  width: 60%;
 }
 
 .btns-wrapper {

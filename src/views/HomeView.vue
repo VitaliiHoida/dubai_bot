@@ -2,6 +2,7 @@
   <div class="container">
     <div class="wrapper">
       <h1>Please, choose below <br> what you want <br>to do with baggage</h1>
+      <p class="info">To use this application, you must have a Telegram login</p>
       <div class="btns-wrapper">
         <router-link class="link_button send" :to="{name: 'send'}">Send</router-link>
         <router-link class="link_button" :to="{name: 'transport'}">Transport</router-link>
