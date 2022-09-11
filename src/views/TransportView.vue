@@ -27,7 +27,7 @@
                           :default-values="parcelTypesSelected"
                           @choose-drop="chooseParcelType"/>
           </fieldset>
-          <fieldset class="form-group" v-if="type.value[i] === "Baggage"">
+          <fieldset class="form-group" v-if="isBaggage">
             <label for="weight">Choose the allowable baggage weight</label>
             <select v-model="weight" name="weight">
               <option>Up to 5 kg</option>
@@ -64,7 +64,6 @@ export default {
     from: '',
     to: '',
     date: new Date(),
-    type: '',
     weight: '',
     parcelTypes: [
       {
@@ -90,8 +89,11 @@ export default {
       return dd + '.' + mm + '.' + yy;
     },
     isSubmitting() {
-      return (this.login && this.from && this.to && this.type) !== '';
+      return ((this.login && this.from && this.to !== '') && (this.parcelTypesSelected.length > 0));
     },
+    isBaggage() {
+      return this.parcelTypesSelected.some(e => e.value === 'Baggage');
+    }
   },
   methods: {
     ...mapActions("transportations", ["createTransportation"]),
