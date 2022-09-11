@@ -11,11 +11,11 @@
         <fieldset>
           <fieldset class="form-group">
             <label for="login">* Your Telegram login </label>
-            <input type="text" name="login"  placeholder="** without @" v-model="login">
+            <input type="text" name="login" placeholder="** without @" v-model="login">
           </fieldset>
           <fieldset class="form-group">
             <label for="from">* City from</label>
-            <input type="text" name="from"  v-model="from">
+            <input type="text" name="from" v-model="from">
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* City to</label>
@@ -23,14 +23,13 @@
           </fieldset>
           <fieldset class="form-group">
             <label for="type">* Choose the parcel type</label>
-            <select v-model="type" name="type">
-              <option>Documents</option>
-              <option>Baggage</option>
-            </select>
+            <multi-select :values="parcelTypes"
+                          :default-values="parcelTypesSelected"
+                          @choose-drop="chooseParcelType"/>
           </fieldset>
-          <fieldset class="form-group" v-if="type === 'Baggage'">
+          <fieldset class="form-group" v-if="type.value[i] === "Baggage"">
             <label for="weight">Choose the allowable baggage weight</label>
-            <select v-model="weight" name="weight" >
+            <select v-model="weight" name="weight">
               <option>Up to 5 kg</option>
               <option>Up to 10 kg</option>
               <option>Up to 15 kg</option>
@@ -52,19 +51,32 @@
 
 <script>
 import Datepicker from 'vue3-datepicker';
+import MultiSelect from "@/components/MultiSelect";
 import {mapState, mapActions} from "vuex";
 
 export default {
   components: {
     Datepicker,
+    MultiSelect,
   },
-  data: ()=> ({
-      login:'',
-      from: '',
-      to: '',
-      date: new Date(),
-      type: '',
-      weight: '',
+  data: () => ({
+    login: '',
+    from: '',
+    to: '',
+    date: new Date(),
+    type: '',
+    weight: '',
+    parcelTypes: [
+      {
+        id: 0,
+        value: "Documents"
+      },
+      {
+        id: 1,
+        value: "Baggage"
+      }
+    ],
+    parcelTypesSelected: [],
   }),
   computed: {
     ...mapState("transportations", ["data"]),
@@ -73,23 +85,31 @@ export default {
       if (dd < 10) dd = '0' + dd;
       let mm = this.date.getMonth() + 1;
       if (mm < 10) mm = '0' + mm;
-      let yy = this.date.getFullYear() ;
+      let yy = this.date.getFullYear();
 
       return dd + '.' + mm + '.' + yy;
     },
     isSubmitting() {
-      return (this.login&&this.from&&this.to&&this.type) !== '';
+      return (this.login && this.from && this.to && this.type) !== '';
     },
   },
   methods: {
     ...mapActions("transportations", ["createTransportation"]),
     onSubmit() {
-      const transportation = {
-        };
-      this.createTransportation({transportation}).then(()=>{
-          this.$router.push({name: 'success'});}
+      const transportation = {};
+      this.createTransportation({transportation}).then(() => {
+            this.$router.push({name: 'success'});
+          }
       );
     },
+    chooseParcelType(e) {
+      if (this.parcelTypesSelected.includes(e)) {
+        let i = this.parcelTypesSelected.indexOf(e);
+        this.parcelTypesSelected.splice(i, 1);
+      } else {
+        this.parcelTypesSelected.push(e);
+      }
+    }
   },
   mounted() {
     /*let tg = window.Telegram.WebApp;

@@ -20,10 +20,9 @@
           </fieldset>
           <fieldset class="form-group">
             <label for="type">* Choose the parcel type</label>
-            <select v-model="type" name="type">
-              <option>Documents</option>
-              <option>Baggage</option>
-            </select>
+            <multi-select :values="parcelTypes"
+                          :default-values="parcelTypesSelected"
+                          @choose-drop="chooseParcelType"/>
           </fieldset>
           <fieldset class="form-group" v-if="type === 'Baggage'">
             <label for="weight">Choose the allowable baggage weight</label>
@@ -64,23 +63,36 @@
 
 <script>
 import Datepicker from "vue3-datepicker";
+import multiSelect from "@/components/MultiSelect";
 
 export default {
   components: {
-    Datepicker
+    Datepicker,
+    multiSelect,
   },
   data: () => ({
     url: "https://t.me/",
     from: '',
     to: '',
     date: new Date(),
-    type: '',
+    type: [],
     weight: '',
     formShow: true,
     cities: ["Lviv", "Kyiv", "Kharkiv"],
     results: [
       {login: "Hoida_V", cityFrom: "Kyiv", cityTo: "Dubai", date: "25.10.2022"}
     ],
+    parcelTypes: [
+      {
+        id: 0,
+        value: "Documents"
+      },
+      {
+        id: 1,
+        value: "Baggage"
+      }
+    ],
+    parcelTypesSelected: [],
   }),
   computed: {
     formattedDate() {
@@ -97,6 +109,16 @@ export default {
     },
   },
   methods: {
+    chooseParcelType(e) {
+      if (this.parcelTypesSelected.includes(e)) {
+        let i = this.parcelTypesSelected.indexOf(e);
+        this.parcelTypesSelected.splice(i, 1);
+      } else {
+        this.parcelTypesSelected.push(e);
+      }
+      this.type = this.parcelTypesSelected;
+
+    },
     onSubmit() {
       this.formShow = !this.formShow;
     },
