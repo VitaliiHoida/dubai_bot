@@ -19,7 +19,8 @@
           </fieldset>
           <fieldset class="form-group" v-else>
             <label for="from">* City from <br> <span>To change - specify Dubai in 'City to'</span></label>
-            <input type="text" name="from" :value="from = 'Dubai'" @focusin="event => from = event.target.value" readonly >
+            <input type="text" name="from" :value="from = 'Dubai'" @focusin="event => from = event.target.value"
+                   readonly>
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* City to</label>
@@ -91,16 +92,39 @@ export default {
     },
     isDubai() {
       return this.to.toLowerCase() === 'dubai';
-    }
+    },
+    formattedDate() {
+      let dd = this.date.getDate();
+      if (dd < 10) dd = '0' + dd;
+      let mm = this.date.getMonth() + 1;
+      if (mm < 10) mm = '0' + mm;
+      let yy = this.date.getFullYear();
+      return yy + '-' + mm + '-' + dd;
+    },
+    types() {
+      let str = '';
+      this.parcelTypesSelected.forEach(item => {
+        str = str + item.value + ', ';
+      });
+      return str;
+    },
   },
   methods: {
     ...mapActions("transportations", ["createTransportation"]),
     onSubmit() {
-      const transportation = {};
-      this.createTransportation({transportation}).then(() => {
+      const transportation = {
+        login_tg: this.login.toLowerCase(),
+        city_from: this.from.toLowerCase(),
+        city_to: this.to.toLowerCase(),
+        travel_date: this.formattedDate,
+        parcel_type: this.types,
+        parcel_weight: this.weight.length > 0 ? this.weight : '',
+      };
+      console.log(transportation);
+      /*this.createTransportation({transportation}).then(() => {
             this.$router.push({name: 'success'});
           }
-      );
+      );*/
     },
     chooseParcelType(e) {
       if (this.parcelTypesSelected.includes(e)) {

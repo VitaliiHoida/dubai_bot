@@ -115,6 +115,21 @@ export default {
       newCities.splice(d, 1);
       return newCities;
     },
+    formattedDate() {
+      let dd = this.date.getDate();
+      if (dd < 10) dd = '0' + dd;
+      let mm = this.date.getMonth() + 1;
+      if (mm < 10) mm = '0' + mm;
+      let yy = this.date.getFullYear();
+      return yy + '-' + mm + '-' + dd;
+    },
+    types() {
+      let str = '';
+      this.parcelTypesSelected.forEach(item => {
+        str = str + item.value + ', ';
+      });
+      return str;
+    },
   },
   methods: {
     chooseParcelType(e) {
@@ -129,6 +144,7 @@ export default {
     },
     onSubmit() {
       this.formShow = !this.formShow;
+
     },
   },
 }
