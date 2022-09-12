@@ -88,6 +88,8 @@ fieldset {
 }
 .form-group label {
   margin-bottom: 10px;
+  text-align: left;
+  width: 100%;
 }
 .form-group select,
 .form-group .v3dp__datepicker {
@@ -160,5 +162,10 @@ p.info {
   text-transform: uppercase;
   color: darkseagreen;
   text-decoration: none;
+}
+
+label>span{
+  color: darkgray;
+  font-size: 14px;
 }
 </style>

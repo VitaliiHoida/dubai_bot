@@ -4,18 +4,22 @@
       <h1>Enter your travel details</h1>
       <p class="info">
         Please indicate city names in English<br>
-        (e.g. Kyiv, Moscow, Dubai etc.)
+        (e.g. Kyiv, Moscow, Dubai etc.).<br><br>
+        * - required fields
       </p>
       <form @submit.prevent="onSubmit">
-        <p>* - required fields</p>
         <fieldset>
           <fieldset class="form-group">
             <label for="login">* Your Telegram login </label>
             <input type="text" name="login" placeholder="** without @" v-model="login">
           </fieldset>
-          <fieldset class="form-group">
+          <fieldset class="form-group" v-if="isDubai">
             <label for="from">* City from</label>
             <input type="text" name="from" v-model="from">
+          </fieldset>
+          <fieldset class="form-group" v-else>
+            <label for="from">* City from <br> <span>To change - specify Dubai in 'City to'</span></label>
+            <input type="text" name="from" :value="from = 'Dubai'" @focusin="event => from = event.target.value" readonly >
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* City to</label>
@@ -79,20 +83,14 @@ export default {
   }),
   computed: {
     ...mapState("transportations", ["data"]),
-    formattedDate() {
-      let dd = this.date.getDate();
-      if (dd < 10) dd = '0' + dd;
-      let mm = this.date.getMonth() + 1;
-      if (mm < 10) mm = '0' + mm;
-      let yy = this.date.getFullYear();
-
-      return dd + '.' + mm + '.' + yy;
-    },
     isSubmitting() {
       return ((this.login && this.from && this.to !== '') && (this.parcelTypesSelected.length > 0));
     },
     isBaggage() {
       return this.parcelTypesSelected.some(e => e.value === 'Baggage');
+    },
+    isDubai() {
+      return this.to.toLowerCase() === 'dubai';
     }
   },
   methods: {

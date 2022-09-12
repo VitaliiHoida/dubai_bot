@@ -10,10 +10,9 @@
       >
         <div v-for="item in defaultValues"
              :key="item.id"
-             class="item">
+             class="drop_item">
           {{ item.value }}
         </div>
-
         <input type="text"
                v-if="defaultValues.length === 0"
                v-model="search"
@@ -22,10 +21,8 @@
                name="type"
                readonly
         />
-
       </div>
     </div>
-
     <div class="droped">
       <ul class="droplist">
         <li v-for="item in filteredList" :key="item.id" @click="choose(item)" :class="{'choosen': this.defaultValues.includes(item)}">
@@ -143,7 +140,7 @@ export default {
   border-radius: 4px;
 }
 
-.item{
+.drop_item{
   padding: 4px 8px;
   margin:5px;
   font-size: 16px;

@@ -2,15 +2,21 @@
   <div class="container">
     <div class="wrapper" v-if="formShow">
       <h1>Specify transfer details</h1>
-      <p class="info">If your city is not there - unfortunately, no one goes there (or from there)</p>
+      <p class="info">
+        If your city is not there - unfortunately, no one goes there (or from there).<br><br>
+        * - required fields
+      </p>
       <form @submit.prevent="onSubmit">
-        <p class="right">* - required fields</p>
         <fieldset>
-          <fieldset class="form-group">
+          <fieldset class="form-group" v-if="isDubai">
             <label for="from">* City from</label>
             <select name="from" v-model="from">
-              <option v-for="(item, i) in cities" :key="i">{{ item }}</option>
+              <option v-for="(item, i) in citiesWithoutDubai" :key="i">{{ item }}</option>
             </select>
+          </fieldset>
+          <fieldset class="form-group" v-else>
+            <label for="from">* City from <br> <span>To change - specify Dubai in 'City to'</span></label>
+            <input  :value="from = 'Dubai'" readonly/>
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* City to</label>
@@ -25,7 +31,7 @@
                           @choose-drop="chooseParcelType"/>
           </fieldset>
           <fieldset class="form-group" v-if="isBaggage">
-            <label for="weight">Choose the allowable baggage weight</label>
+            <label for="weight">Choose your baggage weight</label>
             <select v-model="weight" name="weight">
               <option>Up to 5 kg</option>
               <option>Up to 10 kg</option>
@@ -77,7 +83,7 @@ export default {
     date: new Date(),
     weight: '',
     formShow: true,
-    cities: ["Lviv", "Kyiv", "Kharkiv"],
+    cities: ["Lviv", "Kyiv", "Kharkiv", "Dubai"],
     results: [
       {login: "Hoida_V", cityFrom: "Kyiv", cityTo: "Dubai", date: "25.10.2022"}
     ],
@@ -94,21 +100,21 @@ export default {
     parcelTypesSelected: [],
   }),
   computed: {
-    formattedDate() {
-      var dd = this.date.getDate();
-      if (dd < 10) dd = '0' + dd;
-      var mm = this.date.getMonth() + 1;
-      if (mm < 10) mm = '0' + mm;
-      var yy = this.date.getFullYear();
-
-      return dd + '.' + mm + '.' + yy;
-    },
     isSubmitting() {
       return ((this.from && this.to !== '') && (this.parcelTypesSelected.length > 0));
     },
     isBaggage() {
       return this.parcelTypesSelected.some(e => e.value === 'Baggage');
-    }
+    },
+    isDubai() {
+      return this.to.toLowerCase() === 'dubai';
+    },
+    citiesWithoutDubai() {
+      let newCities = this.cities.slice(0);
+      let d = newCities.indexOf("Dubai");
+      newCities.splice(d, 1);
+      return newCities;
+    },
   },
   methods: {
     chooseParcelType(e) {
