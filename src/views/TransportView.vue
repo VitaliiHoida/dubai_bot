@@ -127,10 +127,10 @@ export default {
         baggage_weight: this.weight.length > 0 ? Number(this.weight) : 0,
       };
       console.log(transportation);
-      /*this.createTransportation({transportation}).then(() => {
+      this.createTransportation({transportation}).then(() => {
             this.$router.push({name: 'success'});
           }
-      );*/
+      );
     },
     chooseParcelType(e) {
       if (this.parcelTypesSelected.includes(e)) {

@@ -1,13 +1,13 @@
 import axios from "@/api/axios";
 
 const getTransportation = slug => {
-    return axios.get(`/articles/${slug}`)
-        .then(response => response.data.article);
+    return axios.get(`/search/`, {slug})
+        .then(response => response.data);
 }
 
-const createTransportation = articleInput => {
-    return axios.post('/articles', {article: articleInput})
-        .then(response => response.data.article);
+const createTransportation = transportation => {
+    return axios.post('/send-parcel', transportation)
+        .then();
 }
 
 export default {

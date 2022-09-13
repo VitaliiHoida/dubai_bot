@@ -153,9 +153,25 @@ p.info {
   border-radius: 3px;
 }
 
-.results .item {
+.results .item{
+  width: 100%;
+  margin-bottom: 10px;
+}
+.results .item_info {
+  width: 100%;
   display: flex;
   justify-content: space-between;
+}
+.results .item_info .city{
+  text-transform: capitalize;
+}
+.results .item .type{
+  width: 100%;
+  font-size: 14px;
+  line-height: 14px;
+  text-align: left;
+  padding-left: 15px;
+  color: #a9a9a9;
 }
 .results .item a{
   font-size: 18px;

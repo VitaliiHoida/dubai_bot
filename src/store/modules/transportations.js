@@ -5,40 +5,27 @@ export default {
     namespaced: true,
     state: {
         data: null,
-        isLoading: false,
-        error: null,
-        comments: null,
     },
     mutations: {
         getTransportationsStart() {},
-        getTransportationsSuccess() {},
+        getTransportationsSuccess(state, payload) {
+            state.data = payload;
+        },
         getTransportationsFailure() {},
 
         createTransportationsStart() {},
         createTransportationsSuccess() {},
         createTransportationsFailure() {},
 
-
-        /*getArticleStart(state) {
-            state.isLoading = true;
-            state.data = null;
-        },
-        getArticleSuccess(state, payload) {
-            state.isLoading = false;
-            state.data = payload;
-        },
-        getArticleFailure(state) {
-            state.isLoading = false;
-        },*/
     },
     actions: {
-        getTranspotation(context, {slug}) {
+        getTransportation(context, {slug}) {
             return new Promise(resolve => {
                 context.commit('getTransportationsStart', slug);
                 transportationsApi.getTransportation(slug)
-                    .then(article => {
-                        context.commit('getTransportationsSuccess', article);
-                        resolve(article);
+                    .then(result => {
+                        context.commit('getTransportationsSuccess', result);
+                        resolve(result);
                     })
                     .catch(() => {
                         context.commit('getTransportationsFailure');
@@ -49,12 +36,12 @@ export default {
             return new Promise(resolve => {
                 context.commit('createTransportationsStart');
                 transportationsApi.createTransportation(transportation)
-                    .then(article => {
-                        context.commit('createTransportationsSuccess', article)
-                        resolve(article);
+                    .then(transportation => {
+                        context.commit('createTransportationsSuccess', transportation)
+                        resolve(transportation);
                     })
-                    .catch(result => {
-                        context.commit('createTransportationsFailure', result.response.data.errors);
+                    .catch(() => {
+                        context.commit('createTransportationsFailure');
                     });
             })
         }

@@ -16,7 +16,7 @@
           </fieldset>
           <fieldset class="form-group" v-else>
             <label for="from">* City from <br> <span>To change - specify Dubai in 'City to'</span></label>
-            <input  :value="from = 'Dubai'" readonly/>
+            <input :value="from = 'Dubai'" readonly/>
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* City to</label>
@@ -50,13 +50,19 @@
       </form>
     </div>
     <div class="wrapper results" v-else>
-      <div class="results" v-if="results.length > 0">
+      <div class="results" v-if="data.length > 0">
         <h1>We found matches for you 🥳</h1>
         <p class="info">Сlick on the login to contact the person</p>
-        <div class="item" v-for="(item, i) in results" :key="i">
-          <span>{{ i + 1 }}. <a :href="url + item.login">{{ item.login }}</a></span>
-          <span>{{ item.cityFrom }} - {{ item.cityTo }}</span>
-          <span>{{ item.date }}</span>
+        <div class="item" v-for="(item, i) in data" :key="i">
+          <div class="item_info">
+            <span>{{ i + 1 }}. <a :href="url + item.tg_login">{{ item.tg_login }}</a></span>
+            <span class="city">{{ item.city_from }}</span> - <span class="city">{{ item.city_to }}</span>
+            <span>{{ item.travel_date }}</span>
+          </div>
+          <div class="type" v-if="item.parcel_type === 'both'">Can take Documents, Baggage (up to {{ item.baggage_weight }} kg)
+          </div>
+          <div class="type" v-if="item.parcel_type === 'baggage'">Can take Baggage (up to {{ item.baggage_weight }} kg)</div>
+          <div class="type" v-if="item.parcel_type === 'documents'">Can take Documents</div>
         </div>
       </div>
       <div class="no_matches" v-else>
@@ -70,7 +76,7 @@
 <script>
 import Datepicker from "vue3-datepicker";
 import multiSelect from "@/components/MultiSelect";
-import {stringify} from 'query-string';
+import {mapState, mapActions} from "vuex";
 
 export default {
   components: {
@@ -85,9 +91,6 @@ export default {
     weight: '',
     formShow: true,
     cities: ["Lviv", "Kyiv", "Kharkiv", "Dubai"],
-    results: [
-      {login: "Hoida_V", cityFrom: "Kyiv", cityTo: "Dubai", date: "25.10.2022"}
-    ],
     parcelTypes: [
       {
         id: 0,
@@ -101,6 +104,7 @@ export default {
     parcelTypesSelected: [],
   }),
   computed: {
+    ...mapState("transportations", ["data"]),
     isSubmitting() {
       return ((this.from && this.to !== '') && (this.parcelTypesSelected.length > 0));
     },
@@ -130,15 +134,18 @@ export default {
       this.parcelTypesSelected.forEach(item => {
         arr.push(item.id);
       });
-      if (arr.length>1) {
+      if (arr.length > 1) {
         res = 'both';
       } else if (arr[0] === 0) {
         res = 'documents';
-      } else { res = 'baggage';}
+      } else {
+        res = 'baggage';
+      }
       return res;
     },
   },
   methods: {
+    ...mapActions("transportations", ["getTransportation"]),
     chooseParcelType(e) {
       if (this.parcelTypesSelected.includes(e)) {
         let i = this.parcelTypesSelected.indexOf(e);
@@ -150,18 +157,17 @@ export default {
 
     },
     onSubmit() {
-      const stringifiedParams = stringify({
+      const stringifiedParams = {
         city_from: this.from.toLowerCase(),
         city_to: this.to.toLowerCase(),
         travel_date: this.formattedDate,
         parcel_type: this.types,
         baggage_weight: this.weight.length > 0 ? Number(this.weight) : 0,
-      });
-      const apiUrlWithParams = `/?${stringifiedParams}`;
-
-
-      /*this.formShow = !this.formShow;*/
-      console.log(apiUrlWithParams);
+      };
+      this.getTransportation({stringifiedParams}).then(() => {
+            this.formShow = !this.formShow;
+          }
+      );
     },
   },
 }
