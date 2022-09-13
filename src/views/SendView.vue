@@ -33,10 +33,10 @@
           <fieldset class="form-group" v-if="isBaggage">
             <label for="weight">Choose your baggage weight</label>
             <select v-model="weight" name="weight">
-              <option>Up to 5 kg</option>
-              <option>Up to 10 kg</option>
-              <option>Up to 15 kg</option>
-              <option>Up to 20 kg</option>
+              <option value="5">Up to 5 kg</option>
+              <option value="10">Up to 10 kg</option>
+              <option value="15">Up to 15 kg</option>
+              <option value="20">Up to 20 kg</option>
             </select>
           </fieldset>
           <fieldset class="form-group">
@@ -70,6 +70,7 @@
 <script>
 import Datepicker from "vue3-datepicker";
 import multiSelect from "@/components/MultiSelect";
+import {stringify} from 'query-string';
 
 export default {
   components: {
@@ -124,11 +125,17 @@ export default {
       return yy + '-' + mm + '-' + dd;
     },
     types() {
-      let str = '';
+      let arr = [];
+      let res = ''
       this.parcelTypesSelected.forEach(item => {
-        str = str + item.value + ', ';
+        arr.push(item.id);
       });
-      return str;
+      if (arr.length>1) {
+        res = 'both';
+      } else if (arr[0] === 0) {
+        res = 'documents';
+      } else { res = 'baggage';}
+      return res;
     },
   },
   methods: {
@@ -143,8 +150,18 @@ export default {
 
     },
     onSubmit() {
-      this.formShow = !this.formShow;
+      const stringifiedParams = stringify({
+        city_from: this.from.toLowerCase(),
+        city_to: this.to.toLowerCase(),
+        travel_date: this.formattedDate,
+        parcel_type: this.types,
+        baggage_weight: this.weight.length > 0 ? Number(this.weight) : 0,
+      });
+      const apiUrlWithParams = `/?${stringifiedParams}`;
 
+
+      /*this.formShow = !this.formShow;*/
+      console.log(apiUrlWithParams);
     },
   },
 }
