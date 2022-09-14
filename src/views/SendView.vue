@@ -63,9 +63,13 @@
             <span class="city">{{ item.city_from }}</span> - <span class="city">{{ item.city_to }}</span>
             <span>{{ item.travel_date }}</span>
           </div>
-          <div class="type" v-if="item.parcel_type === 'both'">Can take Documents, Baggage (up to {{ item.baggage_weight }} kg)
+          <div class="type" v-if="item.parcel_type === 'both'">Can take Documents, Baggage (up to {{
+              item.baggage_weight
+            }} kg)
           </div>
-          <div class="type" v-if="item.parcel_type === 'baggage'">Can take Baggage (up to {{ item.baggage_weight }} kg)</div>
+          <div class="type" v-if="item.parcel_type === 'baggage'">Can take Baggage (up to {{ item.baggage_weight }}
+            kg)
+          </div>
           <div class="type" v-if="item.parcel_type === 'documents'">Can take Documents</div>
         </div>
       </div>
@@ -89,6 +93,7 @@ export default {
     multiSelect,
   },
   data: () => ({
+    tg: null,
     url: "https://t.me/",
     date: new Date(),
     weight: '',
@@ -115,9 +120,6 @@ export default {
     },
     isBaggage() {
       return this.parcelTypesSelected.some(e => e.value === 'Baggage');
-    },
-    isDubai() {
-      return this.to.toLowerCase() === 'dubai';
     },
     formattedDate() {
       let dd = this.date.getDate();
