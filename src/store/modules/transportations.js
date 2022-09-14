@@ -19,9 +19,9 @@ export default {
 
     },
     actions: {
-        getTransportation(context, {slug}) {
+        getTransportation(context, slug) {
             return new Promise(resolve => {
-                context.commit('getTransportationsStart', slug);
+                context.commit('getTransportationsStart');
                 transportationsApi.getTransportation(slug)
                     .then(result => {
                         context.commit('getTransportationsSuccess', result);

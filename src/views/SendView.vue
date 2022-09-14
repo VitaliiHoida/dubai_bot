@@ -10,18 +10,18 @@
         <fieldset>
           <fieldset class="form-group" v-if="isDubai">
             <label for="from">* City from</label>
-            <select name="from" v-model="from">
-              <option v-for="(item, i) in citiesWithoutDubai" :key="i">{{ item }}</option>
+            <select name="from" v-model="from" class="city_input">
+              <option v-for="(item, i) in citiesFrom" :key="i">{{ item }}</option>
             </select>
           </fieldset>
           <fieldset class="form-group" v-else>
             <label for="from">* City from <br> <span>To change - specify Dubai in 'City to'</span></label>
-            <input :value="from = 'Dubai'" readonly/>
+            <input :value="from = 'Dubai'" readonly class="city_input"/>
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* City to</label>
-            <select name="to" v-model="to">
-              <option v-for="(item, i) in cities" :key="i">{{ item }}</option>
+            <select name="to" v-model="to" class="city_input">
+              <option v-for="(item, i) in citiesTo" :key="i">{{ item }}</option>
             </select>
           </fieldset>
           <fieldset class="form-group">
@@ -77,6 +77,7 @@
 import Datepicker from "vue3-datepicker";
 import multiSelect from "@/components/MultiSelect";
 import {mapState, mapActions} from "vuex";
+import {stringify} from "query-string";
 
 export default {
   components: {
@@ -90,7 +91,6 @@ export default {
     date: new Date(),
     weight: '',
     formShow: true,
-    cities: ["Lviv", "Kyiv", "Kharkiv", "Dubai"],
     parcelTypes: [
       {
         id: 0,
@@ -105,6 +105,7 @@ export default {
   }),
   computed: {
     ...mapState("transportations", ["data"]),
+    ...mapState("cities", ["citiesTo", "citiesFrom"]),
     isSubmitting() {
       return ((this.from && this.to !== '') && (this.parcelTypesSelected.length > 0));
     },
@@ -113,12 +114,6 @@ export default {
     },
     isDubai() {
       return this.to.toLowerCase() === 'dubai';
-    },
-    citiesWithoutDubai() {
-      let newCities = this.cities.slice(0);
-      let d = newCities.indexOf("Dubai");
-      newCities.splice(d, 1);
-      return newCities;
     },
     formattedDate() {
       let dd = this.date.getDate();
@@ -143,8 +138,18 @@ export default {
       }
       return res;
     },
+    params() {
+      return {
+        city_from: this.from.toLowerCase(),
+        city_to: this.to.toLowerCase(),
+        travel_date: this.formattedDate,
+        parcel_type: this.types,
+        baggage_weight: this.weight.length > 0 ? Number(this.weight) : 0,
+      };
+    }
   },
   methods: {
+    ...mapActions("cities", ["getCityFrom", "getCityTo"]),
     ...mapActions("transportations", ["getTransportation"]),
     chooseParcelType(e) {
       if (this.parcelTypesSelected.includes(e)) {
@@ -154,22 +159,20 @@ export default {
         this.parcelTypesSelected.push(e);
       }
       this.type = this.parcelTypesSelected;
-
     },
     onSubmit() {
-      const stringifiedParams = {
-        city_from: this.from.toLowerCase(),
-        city_to: this.to.toLowerCase(),
-        travel_date: this.formattedDate,
-        parcel_type: this.types,
-        baggage_weight: this.weight.length > 0 ? Number(this.weight) : 0,
-      };
-      this.getTransportation({stringifiedParams}).then(() => {
+      const stringifiedParams = stringify(this.params);
+      const apiUrlWithParams = `${stringifiedParams}`;
+      this.getTransportation(apiUrlWithParams).then(() => {
             this.formShow = !this.formShow;
           }
       );
     },
   },
+  mounted() {
+    this.getCityTo();
+    this.getCityFrom();
+  }
 }
 </script>
 

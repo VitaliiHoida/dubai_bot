@@ -15,16 +15,16 @@
           </fieldset>
           <fieldset class="form-group" v-if="isDubai">
             <label for="from">* City from</label>
-            <input type="text" name="from" v-model="from">
+            <input type="text" name="from" v-model="from" class="city_input">
           </fieldset>
           <fieldset class="form-group" v-else>
             <label for="from">* City from <br> <span>To change - specify Dubai in 'City to'</span></label>
             <input type="text" name="from" :value="from = 'Dubai'" @focusin="event => from = event.target.value"
-                   readonly>
+                   readonly class="city_input">
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* City to</label>
-            <input type="text" name="to" v-model="to">
+            <input type="text" name="to" v-model="to" class="city_input">
           </fieldset>
           <fieldset class="form-group">
             <label for="type">* Choose the parcel type</label>

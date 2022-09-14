@@ -141,6 +141,10 @@ form p.right {
   font-size: 12px;
   text-align: right;
 }
+form select option,
+form .city_input {
+  text-transform: capitalize;
+}
 
 input::placeholder{
   color: rgba(255, 255, 255, 0.6);
