@@ -142,8 +142,8 @@ export default {
     }
   },
   mounted() {
-    /*let tg = window.Telegram.WebApp;
-    this.login = tg.initDataUnsafe.user.username;*/
+    let tg = window.Telegram.WebApp;
+    this.login = tg.initDataUnsafe.user.username;
   }
 }
 </script>
