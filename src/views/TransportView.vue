@@ -13,18 +13,20 @@
             <label for="login">* Your Telegram login </label>
             <input type="text" name="login" placeholder="** without @" v-model="login">
           </fieldset>
-          <fieldset class="form-group" v-if="isDubai">
-            <label for="from">* City from</label>
-            <input type="text" name="from" v-model="from" class="city_input">
-          </fieldset>
-          <fieldset class="form-group" v-else>
-            <label for="from">* City from <br> <span>To change - specify Dubai in 'City to'</span></label>
-            <input type="text" name="from" :value="from = 'Dubai'" @focusin="event => from = event.target.value"
-                   readonly class="city_input">
+          <fieldset class="form-group">
+            <label>* Your direction</label>
+            <div class="radio_input">
+              <input class="custom_radio" type="radio" id="from" value="From" name="direction" v-model="direction"/>
+              <label for="from">From Dubai</label>
+            </div>
+            <div class="radio_input">
+              <input class="custom_radio" type="radio" id="to" value="To" name="direction" v-model="direction"/>
+              <label for="to">To Dubai</label>
+            </div>
           </fieldset>
           <fieldset class="form-group">
-            <label for="to">* City to</label>
-            <input type="text" name="to" v-model="to" class="city_input">
+              <label for="from">* Another waypoint</label>
+              <input type="text" name="from" v-model="city" class="city_input">
           </fieldset>
           <fieldset class="form-group">
             <label for="type">* Choose the parcel type</label>
@@ -66,10 +68,10 @@ export default {
   },
   data: () => ({
     login: '',
-    from: '',
-    to: '',
+    city: '',
     date: new Date(),
     weight: '',
+    direction: '',
     parcelTypes: [
       {
         id: 0,
@@ -85,13 +87,10 @@ export default {
   computed: {
     ...mapState("transportations", ["data"]),
     isSubmitting() {
-      return ((this.login && this.from && this.to !== '') && (this.parcelTypesSelected.length > 0));
+      return ((this.login && this.city && this.direction !== '') && (this.parcelTypesSelected.length > 0));
     },
     isBaggage() {
       return this.parcelTypesSelected.some(e => e.value === 'Baggage');
-    },
-    isDubai() {
-      return this.to.toLowerCase() === 'dubai';
     },
     formattedDate() {
       let dd = this.date.getDate();
@@ -107,11 +106,13 @@ export default {
       this.parcelTypesSelected.forEach(item => {
         arr.push(item.id);
       });
-      if (arr.length>1) {
+      if (arr.length > 1) {
         res = 'both';
       } else if (arr[0] === 0) {
         res = 'documents';
-      } else { res = 'baggage';}
+      } else {
+        res = 'baggage';
+      }
       return res;
     },
   },
@@ -120,8 +121,8 @@ export default {
     onSubmit() {
       const transportation = {
         tg_login: this.login.toLowerCase(),
-        city_from: this.from.toLowerCase(),
-        city_to: this.to.toLowerCase(),
+        city_from: this.direction === "From" ? "dubai" : this.city.toLowerCase(),
+        city_to: this.direction === "To" ? "dubai" : this.city.toLowerCase(),
         travel_date: this.formattedDate,
         parcel_type: this.types/*JSON.stringify(this.parcelTypesSelected)*/,
         baggage_weight: this.weight.length > 0 ? Number(this.weight) : 0,

@@ -8,20 +8,24 @@
       </p>
       <form @submit.prevent="onSubmit">
         <fieldset>
-          <fieldset class="form-group" v-if="isDubai">
-            <label for="from">* City from</label>
-            <select name="from" v-model="from" class="city_input">
-              <option v-for="(item, i) in citiesFrom" :key="i">{{ item }}</option>
-            </select>
-          </fieldset>
-          <fieldset class="form-group" v-else>
-            <label for="from">* City from <br> <span>To change - specify Dubai in 'City to'</span></label>
-            <input :value="from = 'Dubai'" readonly class="city_input"/>
+          <fieldset class="form-group">
+            <label>* Your direction</label>
+            <div class="radio_input">
+              <input class="custom_radio" type="radio" id="from" value="From" name="direction" v-model="direction"/>
+              <label for="from">From Dubai</label>
+            </div>
+            <div class="radio_input">
+              <input class="custom_radio" type="radio" id="to" value="To" name="direction" v-model="direction"/>
+              <label for="to">To Dubai</label>
+            </div>
           </fieldset>
           <fieldset class="form-group">
-            <label for="to">* City to</label>
-            <select name="to" v-model="to" class="city_input">
+            <label for="to">* Another waypoint</label>
+            <select name="to" v-model="city" class="city_input" v-if="direction==='From'">
               <option v-for="(item, i) in citiesTo" :key="i">{{ item }}</option>
+            </select>
+            <select name="to" v-model="city" class="city_input" v-else>
+              <option v-for="(item, i) in citiesFrom" :key="i">{{ item }}</option>
             </select>
           </fieldset>
           <fieldset class="form-group">
@@ -86,10 +90,10 @@ export default {
   },
   data: () => ({
     url: "https://t.me/",
-    from: '',
-    to: '',
     date: new Date(),
     weight: '',
+    city: '',
+    direction: '',
     formShow: true,
     parcelTypes: [
       {
@@ -107,7 +111,7 @@ export default {
     ...mapState("transportations", ["data"]),
     ...mapState("cities", ["citiesTo", "citiesFrom"]),
     isSubmitting() {
-      return ((this.from && this.to !== '') && (this.parcelTypesSelected.length > 0));
+      return ((this.city && this.direction !== '') && (this.parcelTypesSelected.length > 0));
     },
     isBaggage() {
       return this.parcelTypesSelected.some(e => e.value === 'Baggage');
@@ -140,8 +144,8 @@ export default {
     },
     params() {
       return {
-        city_from: this.from.toLowerCase(),
-        city_to: this.to.toLowerCase(),
+        city_from: this.direction === 'From' ? "dubai" : this.city.toLowerCase(),
+        city_to: this.direction === 'To' ? "dubai" : this.city.toLowerCase(),
         travel_date: this.formattedDate,
         parcel_type: this.types,
         baggage_weight: this.weight.length > 0 ? Number(this.weight) : 0,
