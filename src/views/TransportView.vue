@@ -1,6 +1,12 @@
 <template>
   <div class="container">
+
     <div class="wrapper">
+      <div class="addit_btns">
+        <router-link :to="{name :'home'}" class="back_link">&#9664; To main page</router-link>
+        <a href="#">Operator &#9742;</a>
+      </div>
+
       <h1>Enter your travel details</h1>
       <p class="info">
         Please indicate city names in English<br>

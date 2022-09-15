@@ -229,4 +229,36 @@ label>span{
   color: darkgray;
   font-size: 14px;
 }
+.addit_btns{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.addit_btns a{
+  color: seagreen;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin: 5px 0;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a.back_link{
+  color: #7896b5;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin: 5px 0;
+  text-decoration: none;
+}
+form .search-input.positioned{
+  width: 260px;
+  color: #000;
+  text-transform: capitalize;
+}
+form .droplist li span,
+form .select .drop_item{
+  text-transform: capitalize;
+}
 </style>

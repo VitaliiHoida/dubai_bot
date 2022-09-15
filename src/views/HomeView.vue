@@ -1,6 +1,10 @@
 <template>
   <div class="container">
     <div class="wrapper">
+      <div class="addit_btns">
+        <a href="#">
+          &#128712; Operator</a>
+      </div>
       <h1>Please, choose below <br> what you want <br>to do with baggage</h1>
       <p class="info">To use this application, you must have a Telegram login</p>
       <div class="btns-wrapper">

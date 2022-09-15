@@ -1,6 +1,11 @@
 <template>
   <div class="container">
     <div class="wrapper" v-if="formShow">
+      <div class="addit_btns">
+        <router-link :to="{name :'home'}" class="back_link">&#9664; To main page</router-link>
+        <a href="#">Operator &#9742;</a>
+      </div>
+
       <h1>Specify transfer details</h1>
       <p class="info">
         If your city is not there - unfortunately, no one goes there (or from there).<br><br>
@@ -21,12 +26,20 @@
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* Another waypoint</label>
-            <select name="to" v-model="city" class="city_input" v-if="direction==='From'">
+<!--            <select name="to" v-model="city" class="city_input" v-if="direction==='From'">
               <option v-for="(item, i) in citiesTo" :key="i">{{ item }}</option>
             </select>
             <select name="to" v-model="city" class="city_input" v-else>
               <option v-for="(item, i) in citiesFrom" :key="i">{{ item }}</option>
-            </select>
+            </select>-->
+            <semi-select :values="citiesTo"
+                         :default-values="city"
+                         @choose-drop="chooseCity"
+                         v-if="direction==='From'"/>
+            <semi-select :values="citiesFrom"
+                         :default-values="city"
+                         @choose-drop="chooseCity"
+                         v-else/>
           </fieldset>
           <fieldset class="form-group">
             <label for="type">* Choose the parcel type</label>
@@ -84,6 +97,7 @@
 <script>
 import Datepicker from "vue3-datepicker";
 import multiSelect from "@/components/MultiSelect";
+import semiSelect from "@/components/SemiSelect";
 import {mapState, mapActions} from "vuex";
 import {stringify} from "query-string";
 
@@ -91,6 +105,7 @@ export default {
   components: {
     Datepicker,
     multiSelect,
+    semiSelect
   },
   data: () => ({
     tg: null,
@@ -165,6 +180,13 @@ export default {
         this.parcelTypesSelected.push(e);
       }
       this.type = this.parcelTypesSelected;
+    },
+    chooseCity(e) {
+      if (this.city === e) {
+        this.city = '';
+      } else {
+        this.city = e;
+      }
     },
     onSubmit() {
       const stringifiedParams = stringify(this.params);
