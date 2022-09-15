@@ -68,6 +68,10 @@
     </div>
     <div class="wrapper results" v-else>
       <div class="results" v-if="data.length > 0">
+        <div class="addit_btns">
+          <router-link :to="{name :'home'}" class="back_link">&#9664; To main page</router-link>
+          <a href="#">Operator &#9742;</a>
+        </div>
         <h1>We found matches for you 🥳</h1>
         <p class="info">Сlick on the login to contact the person</p>
         <div class="item" v-for="(item, i) in data" :key="i">
@@ -87,6 +91,10 @@
         </div>
       </div>
       <div class="no_matches" v-else>
+        <div class="addit_btns">
+          <router-link :to="{name :'home'}" class="back_link">&#9664; To main page</router-link>
+          <a href="#">Operator &#9742;</a>
+        </div>
         <h1>Unfortunately,<br> no matches found 😔</h1>
         <p class="info">You can try again later</p>
       </div>
