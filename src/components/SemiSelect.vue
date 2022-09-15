@@ -15,21 +15,18 @@
                placeholder="Tap to choose..."
                class="search-input"
                name="type"
-               readonly
+               v-model="search"
                v-if="defaultValues.length === 0"
         />
       </div>
     </div>
     <div class="droped">
-      <input type="text"
-             v-model="search"
-             placeholder="Start input city name"
-             class="search-input positioned"
-             @click.stop
-      />
       <ul class="droplist">
         <li v-for="(item,i) in filteredList" :key="i" @click="choose(item)" :class="{'choosen': this.defaultValues.includes(item)}">
           <span> {{ item }} </span>
+        </li>
+        <li class="no_matches" v-if="filteredList?.length === 0">
+          <span>No matches found</span>
         </li>
       </ul>
     </div>
@@ -190,5 +187,11 @@ export default {
 }
 .search-input.positioned::placeholder{
   color: #a9a9a9;
+}
+.no_matches{
+  color: #a9a9a9;
+}
+.multiselect-wrapper ul li.no_matches:hover{
+  background-color: transparent;
 }
 </style>
