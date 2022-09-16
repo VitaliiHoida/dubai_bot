@@ -10,13 +10,13 @@ export default {
     mutations: {
         getCityToStart() {},
         getCityToSuccess(state, payload) {
-            state.citiesTo = payload;
+            state.citiesTo = payload.sort();
         },
         getCityToFailure() {},
 
         getCityFromStart() {},
         getCityFromSuccess(state, payload) {
-            state.citiesFrom = payload;
+            state.citiesFrom = payload.sort();
         },
         getCityFromFailure() {},
 
