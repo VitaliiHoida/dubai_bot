@@ -26,16 +26,11 @@
           </fieldset>
           <fieldset class="form-group">
             <label for="to">* Another waypoint</label>
-<!--            <select name="to" v-model="city" class="city_input" v-if="direction==='From'">
-              <option v-for="(item, i) in citiesTo" :key="i">{{ item }}</option>
-            </select>
-            <select name="to" v-model="city" class="city_input" v-else>
-              <option v-for="(item, i) in citiesFrom" :key="i">{{ item }}</option>
-            </select>-->
             <semi-select :values="citiesTo"
                          :default-values="city"
                          @choose-drop="chooseCity"
-                         v-if="direction==='From'"/>
+                         v-if="direction==='From'"
+                         />
             <semi-select :values="citiesFrom"
                          :default-values="city"
                          @choose-drop="chooseCity"

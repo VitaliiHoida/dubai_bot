@@ -22,7 +22,10 @@
     </div>
     <div class="droped">
       <ul class="droplist">
-        <li v-for="(item,i) in filteredList" :key="i" @click="choose(item)" :class="{'choosen': this.defaultValues.includes(item)}">
+        <li v-for="(item,i) in filteredList"
+            :key="i" @click="choose(item)"
+            :class="{'choosen': this.defaultValues.includes(item)}"
+            v-show="item !== 'dubai'"  >
           <span> {{ item }} </span>
         </li>
         <li class="no_matches" v-if="filteredList?.length === 0">
