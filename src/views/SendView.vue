@@ -75,7 +75,7 @@
             <span class="city">{{ item.city_from }}</span> - <span class="city">{{ item.city_to }}</span>
             <span>{{ item.travel_date }}</span>
           </div>
-          <div class="type" v-if="item.parcel_type === 'both'">Can take Documents, Baggage (up to {{
+          <div class="type" v-if="item.parcel_type === 'documents baggage'">Can take Documents, Baggage (up to {{
               item.baggage_weight
             }} kg)
           </div>
@@ -154,7 +154,7 @@ export default {
         arr.push(item.id);
       });
       if (arr.length > 1) {
-        res = 'both';
+        res = 'documents baggage';
       } else if (arr[0] === 0) {
         res = 'documents';
       } else {

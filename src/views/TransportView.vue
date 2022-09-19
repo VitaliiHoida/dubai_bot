@@ -113,7 +113,7 @@ export default {
         arr.push(item.id);
       });
       if (arr.length > 1) {
-        res = 'both';
+        res = 'documents baggage';
       } else if (arr[0] === 0) {
         res = 'documents';
       } else {
