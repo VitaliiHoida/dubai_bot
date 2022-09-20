@@ -4,7 +4,7 @@
     <div class="wrapper">
       <div class="addit_btns">
         <router-link :to="{name :'home'}" class="back_link">&#9664; To main page</router-link>
-        <a href="#">Operator &#9742;</a>
+        <a href="https://t.me/DP_4h_operatorBot">Operator &#9742;</a>
       </div>
 
       <h1>Enter your travel details</h1>
