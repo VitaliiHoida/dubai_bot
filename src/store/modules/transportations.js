@@ -32,7 +32,7 @@ export default {
                     })
             });
         },
-        createTransportation(context, {transportation}) {
+        createTransportation(context, transportation) {
             return new Promise(resolve => {
                 context.commit('createTransportationsStart');
                 transportationsApi.createTransportation(transportation)
